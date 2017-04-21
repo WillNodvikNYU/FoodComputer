@@ -1,0 +1,28 @@
+import time
+import string
+import serial
+
+FILENAME = "datalog.csv"
+WRITE_FREQUENCY = 50
+
+
+def file_setup(filename):
+    header = ["Water Temp, EC meter, temp_h , temp_p , CO2 , pH"]
+    filename.open()
+    filename.writerow(header)
+    filename.close()
+
+
+output = " "
+ser = serial.Serial('/dev/ttyUSB0', 115200, 8, 'N', 1, timeout=1)
+file_setup(FILENAME)
+
+data_line = ""
+
+ser.open()
+while ser.isopen():
+    with open(FILENAME, 'w') as f:
+        line_in = ser.readline()
+        f.write(line_in)
+
+FILENAME.close()
